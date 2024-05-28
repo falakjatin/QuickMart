@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">QuickMart</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="tagLine">QuickMart: Shop Fast, Live Smart</string>
+
+    <string name="addToCart">Add to Cart</string>
+    <string name="itemName">Item Name</string>
+    <string name="description">Description : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.</string>
+    <string name="selectQuantity">Select Quantity: </string>
+
+    <string name="checkout">Check out</string>
+    <string name="email">Email</string>
+    <string name="shippingDetails">Shipping Details</string>
+    <string name="paymentDetails">Payment Details</string>
+    <string name="cashOnDelivery">Cash on Delivery</string>
+    <string name="creditOrDebit">Credit or Debit</string>
+    <string name="placeOrder">Place Order</string>
+
+
+
+</resources>
