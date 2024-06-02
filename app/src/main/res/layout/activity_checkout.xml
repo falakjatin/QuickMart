@@ -153,10 +153,10 @@
                         android:orientation="vertical">
 
                         <RadioButton
-                            android:id="@+id/rbCOD"
+                            android:id="@+id/rbPOD"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/cashOnDelivery" />
+                            android:text="@string/payOnDelivery" />
 
                         <RadioButton
                             android:id="@+id/rbDebit"
