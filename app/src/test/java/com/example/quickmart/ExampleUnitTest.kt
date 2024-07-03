@@ -1,4 +1,4 @@
-package com.example.capstone_project
+package com.example.quickmart
 
 import org.junit.Test
 
