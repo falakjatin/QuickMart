@@ -13,6 +13,7 @@
     <string name="email">Email</string>
     <string name="shippingDetails">Shipping Details</string>
     <string name="paymentDetails">Payment Details</string>
+    <string name="payOnDelivery">Pay on Delivery</string>
     <string name="cashOnDelivery">Cash on Delivery</string>
     <string name="creditOrDebit">Credit or Debit</string>
     <string name="placeOrder">Place Order</string>
