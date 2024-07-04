@@ -46,6 +46,7 @@ class ProductActivity : AppCompatActivity() {
 //        enableEdgeToEdge()
         setContentView(R.layout.activity_product)
 
+
         db = FirebaseDatabase.getInstance()
         productReference = db!!.getReference("products")
         categoryReference = db!!.getReference("category")
