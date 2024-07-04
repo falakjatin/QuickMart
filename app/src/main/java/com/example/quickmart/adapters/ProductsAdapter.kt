@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-//import com.example.capstone_project.ui.DetailActivity
 import com.example.quickmart.models.Product
 import com.example.quickmart.R
 import com.example.quickmart.ui.DetailActivity

@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "capstone_project"
+rootProject.name = "quickmart"
 include(":app")
  
