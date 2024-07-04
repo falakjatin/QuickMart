@@ -3,6 +3,8 @@ plugins {
     id ("com.android.application");
     id ("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services");
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
 }
 
 android {
@@ -43,6 +45,17 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+
+implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
 
     implementation("androidx.constraintlayout:constraintlayout-core:1.0.4")
     implementation("com.google.firebase:firebase-auth:22.3.0")
