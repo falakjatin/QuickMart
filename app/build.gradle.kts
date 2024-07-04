@@ -2,7 +2,7 @@ plugins {
     id ("kotlin-kapt");
     id ("com.android.application");
     id ("org.jetbrains.kotlin.android");
-    id("com.google.gms.google-services") version "4.4.2" apply false
+    // id("com.google.gms.google-services") version "4.4.2" apply false
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
     alias(libs.plugins.googleGmsGoogleServices) apply false
