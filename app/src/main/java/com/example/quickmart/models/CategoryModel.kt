@@ -1,7 +1,7 @@
 package com.example.quickmart.models
 
 
-class Category {
+class CategoryModel {
     var name: String? = null
     var img: String? = null
 

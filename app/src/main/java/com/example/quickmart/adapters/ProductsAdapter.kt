@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.quickmart.models.Product
+import com.example.quickmart.models.ProductModel
 import com.example.quickmart.R
 import com.example.quickmart.ui.DetailActivity
 import com.google.firebase.storage.FirebaseStorage
@@ -20,7 +20,7 @@ import java.text.DecimalFormat
 
 class ProductsAdapter(
     private val context: Context,
-    private val list: ArrayList<Product>,
+    private val list: ArrayList<ProductModel>,
     storageReference: FirebaseStorage
 ) :
     RecyclerView.Adapter<ProductsAdapter.MyHolder>() {

@@ -45,7 +45,5 @@ class CheckoutActivity : AppCompatActivity() {
         } else {
             layoutCard.visibility = View.GONE
         }
-        
-        
     }
 }

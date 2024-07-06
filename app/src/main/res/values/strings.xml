@@ -18,5 +18,11 @@
     <string name="creditOrDebit">Credit or Debit</string>
     <string name="placeOrder">Place Order</string>
 
+    <string name="password">Password</string>
+    <string name="don_t_have_an_account_sign_up_here">Don\'t have an account? Sign Up here</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="send_link">Send Link</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_have_an_account_login_here">Already have an account? Login Here</string>
 
 </resources>

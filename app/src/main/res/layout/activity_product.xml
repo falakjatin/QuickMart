@@ -8,56 +8,45 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:navigationIcon="@drawable/profile"
         android:layout_width="match_parent"
-        app:menu="@menu/cart_menu"
-        app:title="@string/app_name"
-        app:navigationIconTint="@color/colorPrimary"
+        android:layout_height="wrap_content"
         android:pointerIcon="hand"
-        android:layout_height="wrap_content"/>
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="16dp"
-        android:visibility="invisible"
-        android:src="@drawable/profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorSecondary" />
+        app:menu="@menu/cart_menu"
+        app:navigationIcon="@drawable/profile"
+        app:navigationIconTint="@color/colorPrimary"
+        app:title="@string/app_name" />
 
     <ImageView
-        android:visibility="invisible"
         android:id="@+id/img_cart"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="16dp"
         android:scaleType="centerInside"
         android:src="@drawable/outline_shopping_cart_24"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/colorSecondary" />
 
     <TextView
-        android:visibility="invisible"
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Indian Superstore"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/img_cart"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
     <include
-        app:layout_constraintTop_toBottomOf="@id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        layout="@layout/layout_progress"
         app:layout_constraintBottom_toBottomOf="parent"
-        layout="@layout/layout_progress"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -94,15 +83,16 @@
 
 
             </androidx.recyclerview.widget.RecyclerView>
+
             <TextView
-                android:paddingVertical="8dp"
-                android:paddingHorizontal="16dp"
                 android:id="@+id/tvViewAll"
-                android:textColor="@color/colorSecondary"
-                android:layout_gravity="center"
-                android:text="View more"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="View more"
+                android:textColor="@color/colorSecondary" />
 
             <TextView
                 android:id="@+id/textView3"

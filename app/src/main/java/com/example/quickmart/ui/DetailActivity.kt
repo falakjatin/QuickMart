@@ -13,9 +13,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.quickmart.models.CartProduct
+import com.example.quickmart.models.CartProductModel
 import com.example.quickmart.R
-import com.example.quickmart.models.Product
+import com.example.quickmart.models.ProductModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -29,7 +29,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 class DetailActivity : AppCompatActivity() {
-    private val TAG = "DetailActivity"
     private var itemTitle: TextView? = null
     private var itemName: TextView? = null
     private var itemPrice: TextView? = null
@@ -44,7 +43,7 @@ class DetailActivity : AppCompatActivity() {
     private var cartReference: DatabaseReference? = null
     private var productsReference: DatabaseReference? = null
     private var currentUser: FirebaseUser? = null
-    private var p: Product? = null
+    private var productModel: ProductModel? = null
     private var storageReference: FirebaseStorage? = null
     private var progressDialog: Dialog? = null
 
@@ -89,45 +88,43 @@ class DetailActivity : AppCompatActivity() {
         productsReference?.orderByChild("name")?.equalTo(productName)
             ?.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.i(TAG, "onDataChange: $snapshot")
                     for (snap in snapshot.children) {
-                        p = snap.getValue(Product::class.java)
+                        productModel = snap.getValue(ProductModel::class.java)
                     }
                     updateUI()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.i(TAG, "onCancelled: " + error.message)
+                    Log.i(this.javaClass.name, "onCancelled: " + error.message)
                 }
             })
     }
 
     private fun updateUI() {
-        itemTitle?.text = p?.name
-        itemName?.text = p?.name
-        itemPrice?.text = "$" + p?.price
-        itemDesc?.text = p?.description
+        itemTitle?.text = productModel?.name
+        itemName?.text = productModel?.name
+        itemPrice?.text = "$" + productModel?.price
+        itemDesc?.text = productModel?.description
         val imageRef: StorageReference =
-            storageReference!!.getReferenceFromUrl("gs://quickmartapp2024.appspot.com/products/" + p?.imageUrl)
+            storageReference!!.getReferenceFromUrl("gs://quickmartapp2024.appspot.com/products/" + productModel?.imageUrl)
         Glide.with(this).load(imageRef).into(imgItem!!)
     }
 
     private fun getQuantityFromCart(productName: String?) {
         if (productName != null) {
-            cartReference?.child(currentUser?.uid!!)?.child(productName)
+            cartReference?.child(productName)
                 ?.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        val cartItem: CartProduct? = snapshot.getValue(CartProduct::class.java)
+                        val cartItem: CartProductModel? = snapshot.getValue(CartProductModel::class.java)
                         if (cartItem == null) {
                             setUpQuantityButton(1)
                         } else {
                             setUpQuantityButton(cartItem.quantity)
                         }
-                        Log.i(TAG, "onDataChange: $cartItem")
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Log.e(TAG, "onCancelled: " + error.message)
+                        Log.e(this.javaClass.name, "onCancelled: " + error.message)
                     }
                 })
         }
@@ -137,14 +134,14 @@ class DetailActivity : AppCompatActivity() {
         showProgressDialog()
         cartReference
             ?.child(currentUser?.uid!!)
-            ?.child(p?.name!!)
+            ?.child(productModel?.name!!)
             ?.setValue(
-                CartProduct(
-                    p?.name,
-                    p?.category,
-                    p?.imageUrl,
-                    p?.description,
-                    p?.price,
+                CartProductModel(
+                    productModel?.name,
+                    productModel?.category,
+                    productModel?.imageUrl,
+                    productModel?.description,
+                    productModel?.price,
                     quantity
                 )
             )?.addOnCompleteListener(object : OnCompleteListener<Void?> {

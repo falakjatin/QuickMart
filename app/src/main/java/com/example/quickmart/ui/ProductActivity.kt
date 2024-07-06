@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.quickmart.R
 import com.example.quickmart.adapters.CategoryAdapter
 import com.example.quickmart.adapters.ProductsAdapter
-import com.example.quickmart.models.Category
-import com.example.quickmart.models.Product
+import com.example.quickmart.models.CategoryModel
+import com.example.quickmart.models.ProductModel
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.chip.ChipGroup
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -36,16 +35,13 @@ class ProductActivity : AppCompatActivity() {
     private var toolbar: MaterialToolbar? = null
     private var layoutProgress: LinearLayout? = null
     private var scrollView: NestedScrollView? = null
-    private var cgCategory: ChipGroup? = null
-    private var list: ArrayList<Product?>? = null
+    private var list: ArrayList<ProductModel?>? = null
     private var adapter: ProductsAdapter? = null
     private var tvViewAll: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
         setContentView(R.layout.activity_product)
-
 
         db = FirebaseDatabase.getInstance()
         productReference = db!!.getReference("products")
@@ -66,13 +62,12 @@ class ProductActivity : AppCompatActivity() {
             true
         }
 
-//        toolbar?.setNavigationOnClickListener {
-//            val i = Intent(this@ProductActivity, ProfileActivity::class.java)
-//            startActivity(i)
-//        }
+        toolbar?.setNavigationOnClickListener {
+            val i = Intent(this@ProductActivity, AccountSettingsActivity::class.java)
+            startActivity(i)
+        }
 
         dataFromDB()
-
     }
 
     private fun dataFromDB() {
@@ -85,13 +80,15 @@ class ProductActivity : AppCompatActivity() {
                 scrollView?.visibility = View.VISIBLE
                 list = ArrayList()
                 for (productSnap in snapshot.children) {
-                    list?.add(productSnap.getValue(Product::class.java))
+                    list?.add(productSnap.getValue(ProductModel::class.java))
                 }
 
-                val randomList: ArrayList<Product> = ArrayList()
+                val randomList: ArrayList<ProductModel> = ArrayList()
                 if (list?.size ?: 0 > 15) {
                     Collections.shuffle(list)
-                    randomList.addAll((list?.subList(0, 15) ?: emptyList()) as Collection<Product>)
+                    randomList.addAll(
+                        (list?.subList(0, 15) ?: emptyList()) as Collection<ProductModel>
+                    )
                 }
 
                 setUpCategory()
@@ -118,7 +115,7 @@ class ProductActivity : AppCompatActivity() {
         layoutProgress?.visibility = View.VISIBLE
         scrollView?.visibility = View.INVISIBLE
 
-        val categoryList: ArrayList<Category> = ArrayList()
+        val categoryList: ArrayList<CategoryModel> = ArrayList()
 
         categoryReference?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -126,7 +123,7 @@ class ProductActivity : AppCompatActivity() {
                 scrollView?.visibility = View.VISIBLE
 
                 for (productSnap in snapshot.children) {
-                    categoryList.add(productSnap.getValue(Category::class.java)!!)
+                    categoryList.add(productSnap.getValue(CategoryModel::class.java)!!)
                 }
 
                 val adapter = CategoryAdapter(
@@ -156,4 +153,4 @@ class ProductActivity : AppCompatActivity() {
         })
     }
 
-    }
+}
