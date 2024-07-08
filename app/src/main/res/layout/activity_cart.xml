@@ -8,12 +8,12 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Your cart"
-        app:navigationIcon="@drawable/baseline_arrow_back"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/baseline_arrow_back"
+        app:title="Your cart" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,8 +27,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             tools:ignore="MissingClass">
-
-
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -58,11 +56,11 @@
 
                     <LinearLayout
                         android:id="@+id/llPlaceHolder"
-                        android:padding="32dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:padding="32dp">
 
 
                         <TextView
@@ -76,42 +74,42 @@
 
                         <Button
                             android:id="@+id/btnShop"
-                            android:layout_marginTop="16dp"
-                            android:text="Shop now"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Shop now" />
 
 
                     </LinearLayout>
 
 
                     <View
-                        android:background="@color/light"
-                        android:layout_marginTop="16dp"
                         android:layout_width="match_parent"
-                        android:layout_height="0.3dp"/>
+                        android:layout_height="0.3dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/light" />
 
                     <TextView
-                        android:layout_marginTop="8dp"
                         android:id="@+id/tvSubTotal"
-                        android:layout_gravity="end"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
                     <TextView
                         android:id="@+id/tvHst"
-                        android:layout_gravity="end"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
                     <TextView
                         android:id="@+id/tvGrandTotal"
-                        android:layout_gravity="end"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>

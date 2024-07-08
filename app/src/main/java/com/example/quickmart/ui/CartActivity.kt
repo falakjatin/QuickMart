@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quickmart.R
 import com.example.quickmart.adapters.CartAdapter
-import com.example.quickmart.models.CartProduct
+import com.example.quickmart.models.CartProductModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -45,7 +45,7 @@ class CartActivity : AppCompatActivity() {
     var storage: FirebaseStorage? = null
     var currentUser: FirebaseUser? = null
     var mAuth: FirebaseAuth? = null
-    private var cartList: ArrayList<CartProduct>? = null
+    private var cartList: ArrayList<CartProductModel>? = null
     private var progressDialog: Dialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,20 +91,26 @@ class CartActivity : AppCompatActivity() {
                         hideProgressDialog()
                         cartList = ArrayList()
                         for (item in snapshot.children) {
-                            item.getValue(CartProduct::class.java)?.let { cartList!!.add(it) }
+                            item.getValue(CartProductModel::class.java)?.let { cartList!!.add(it) }
                         }
                         if (cartList!!.size == 0) {
                             llPlaceHolder!!.visibility = View.VISIBLE
                         } else {
                             llPlaceHolder!!.visibility = View.GONE
                         }
-                        val adapter = storage?.let { CartAdapter(this@CartActivity, cartList!!, it) }
+                        val adapter =
+                            storage?.let { CartAdapter(this@CartActivity, cartList!!, it) }
                         rvCart!!.adapter = adapter
                         val layoutManager =
-                            LinearLayoutManager(this@CartActivity, LinearLayoutManager.VERTICAL, false)
+                            LinearLayoutManager(
+                                this@CartActivity,
+                                LinearLayoutManager.VERTICAL,
+                                false
+                            )
                         rvCart!!.layoutManager = layoutManager
                         rvCart!!.setHasFixedSize(true)
-                        adapter!!.setOnDeleteClickListener(object : CartAdapter.OnDeleteClickListener {
+                        adapter!!.setOnDeleteClickListener(object :
+                            CartAdapter.OnDeleteClickListener {
                             override fun onDeleteClicked(productName: String?) {
                                 deleteItem(productName!!)
                             }
@@ -113,11 +119,9 @@ class CartActivity : AppCompatActivity() {
                         for (p in cartList!!) {
                             total += p.quantity * p.price!!.toDouble()
                         }
-                        tvSubTotal!!.text = "Subtotal: $$total"
-                        tvHst!!.text = "HST(13%): $" + DecimalFormat("##.##").format(total * 0.13)
-                        tvGrandTotal!!.text = "Grand Total: $" + DecimalFormat("##.##").format(
-                            total + total * 0.13
-                        )
+                        tvSubTotal!!.text = String.format("Subtotal: $%.2f", total)
+                        tvHst!!.text = String.format("HST(13%%): $%.2f",total * 0.13)
+                        tvGrandTotal!!.text = String.format("Grand Total: $%.2f", total + (total * 0.13))
                     }
 
                     override fun onCancelled(error: DatabaseError) {

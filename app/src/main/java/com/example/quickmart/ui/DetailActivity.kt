@@ -112,7 +112,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun getQuantityFromCart(productName: String?) {
         if (productName != null) {
-            cartReference?.child(productName)
+            cartReference?.child(currentUser?.uid!!)?.child(productName)
                 ?.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val cartItem: CartProductModel? = snapshot.getValue(CartProductModel::class.java)

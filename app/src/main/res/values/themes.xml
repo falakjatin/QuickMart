@@ -6,4 +6,9 @@
     </style>
 
     <style name="Theme.QuickMart" parent="Base.Theme.QuickMart" />
+
+    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">#000</item>
+        <item name="boxStrokeWidth">2dp</item>
+    </style>
 </resources>

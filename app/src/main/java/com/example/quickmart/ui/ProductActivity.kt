@@ -63,7 +63,7 @@ class ProductActivity : AppCompatActivity() {
         }
 
         toolbar?.setNavigationOnClickListener {
-            val i = Intent(this@ProductActivity, AccountSettingsActivity::class.java)
+            val i = Intent(this@ProductActivity, ProfileActivity::class.java)
             startActivity(i)
         }
 

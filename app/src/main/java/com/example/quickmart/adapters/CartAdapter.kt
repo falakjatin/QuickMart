@@ -2,6 +2,7 @@ package com.example.quickmart.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.quickmart.models.CartProduct
+import com.example.quickmart.models.CartProductModel
 import com.example.quickmart.ui.DetailActivity
 import com.example.quickmart.R
 import com.google.firebase.storage.FirebaseStorage
@@ -20,7 +21,7 @@ import java.text.DecimalFormat
 
 class CartAdapter(
     private val context: Context,
-    private val list: ArrayList<CartProduct>,
+    private val list: ArrayList<CartProductModel>,
     storageReference: FirebaseStorage
 ) :
     RecyclerView.Adapter<CartAdapter.ViewHolder>() {
@@ -40,7 +41,7 @@ class CartAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[position]
         val imageRef: StorageReference =
-            storageReference.getReferenceFromUrl("gs://indian-superstore.appspot.com/products/" + product.imageUrl)
+            storageReference.getReferenceFromUrl("gs://quickmartapp2024.appspot.com/products/" + product.imageUrl)
         Glide.with(context)
             .load(imageRef)
             .into(holder.img)
