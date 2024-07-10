@@ -3,6 +3,7 @@ package com.example.quickmart.ui
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -49,6 +50,24 @@ class ProfileActivity : AppCompatActivity() {
         btnLogout = findViewById(R.id.btnLogout)
         btnLogin = findViewById(R.id.btnLogin)
         toolbar.setNavigationOnClickListener(View.OnClickListener { onBackPressed() })
+
+        this.changeView(currentUser)
+        btnLogout.setOnClickListener(View.OnClickListener {
+            auth.signOut()
+            this.changeView(null)
+        })
+
+        btnLogin.setOnClickListener(View.OnClickListener {
+            val i = Intent(
+                this@ProfileActivity,
+                AuthSelectionActivity::class.java
+            )
+            startActivity(i)
+            finish()
+        })
+    }
+
+    private fun changeView(currentUser: FirebaseUser?) {
         if (currentUser != null) {
             findViewById<LinearLayout>(R.id.llUserInfo).visibility = View.VISIBLE
             findViewById<LinearLayout>(R.id.llNoUser).visibility = View.GONE
@@ -57,28 +76,10 @@ class ProfileActivity : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.llUserInfo).visibility = View.GONE
             findViewById<LinearLayout>(R.id.llNoUser).visibility = View.VISIBLE
         }
-        btnLogout.setOnClickListener(View.OnClickListener {
-            auth.signOut()
-            val i = Intent(
-                this@ProfileActivity,
-                MainActivity::class.java
-            )
-            startActivity(i)
-            finish()
-        })
-
-        btnLogin.setOnClickListener(View.OnClickListener {
-            val i = Intent(
-                this@ProfileActivity,
-                MainActivity::class.java
-            )
-            startActivity(i)
-            finish()
-        })
     }
 
     private val userData: Unit
-        private get() {
+        get() {
             showProgressDialog()
             currentUser?.let {
                 userRef.child(it.uid)
@@ -115,6 +116,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun hideProgressDialog() {
-        progressDialog?.cancel()
+        progressDialog.cancel()
     }
 }

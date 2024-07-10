@@ -112,46 +112,55 @@ class DetailActivity : AppCompatActivity() {
 
     private fun getQuantityFromCart(productName: String?) {
         if (productName != null) {
-            cartReference?.child(currentUser?.uid!!)?.child(productName)
-                ?.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val cartItem: CartProductModel? = snapshot.getValue(CartProductModel::class.java)
-                        if (cartItem == null) {
-                            setUpQuantityButton(1)
-                        } else {
-                            setUpQuantityButton(cartItem.quantity)
+            if (currentUser != null) {
+                cartReference?.child(currentUser?.uid!!)?.child(productName)
+                    ?.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val cartItem: CartProductModel? =
+                                snapshot.getValue(CartProductModel::class.java)
+                            if (cartItem == null) {
+                                setUpQuantityButton(1)
+                            } else {
+                                setUpQuantityButton(cartItem.quantity)
+                            }
                         }
-                    }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.e(this.javaClass.name, "onCancelled: " + error.message)
-                    }
-                })
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.e(this.javaClass.name, "onCancelled: " + error.message)
+                        }
+                    })
+            } else {
+                setUpQuantityButton(1)
+            }
         }
     }
 
     private fun addToCart() {
-        showProgressDialog()
-        cartReference
-            ?.child(currentUser?.uid!!)
-            ?.child(productModel?.name!!)
-            ?.setValue(
-                CartProductModel(
-                    productModel?.name,
-                    productModel?.category,
-                    productModel?.imageUrl,
-                    productModel?.description,
-                    productModel?.price,
-                    quantity
-                )
-            )?.addOnCompleteListener(object : OnCompleteListener<Void?> {
-                override fun onComplete(task: Task<Void?>) {
+        if (currentUser != null) {
+            showProgressDialog()
+            cartReference
+                ?.child(currentUser?.uid!!)
+                ?.child(productModel?.name!!)
+                ?.setValue(
+                    CartProductModel(
+                        productModel?.name,
+                        productModel?.category,
+                        productModel?.imageUrl,
+                        productModel?.description,
+                        productModel?.price,
+                        quantity
+                    )
+                )?.addOnCompleteListener { task ->
                     hideProgressDialog()
                     if (task.isSuccessful) {
-                        Toast.makeText(this@DetailActivity, "Added to cart.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DetailActivity, "Added to cart.", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
-            })
+        } else {
+            this.transferToLogin()
+        }
+
     }
 
     private fun showProgressDialog() {
@@ -189,5 +198,11 @@ class DetailActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun transferToLogin() {
+        val i = Intent(this@DetailActivity, AuthSelectionActivity::class.java)
+        startActivity(i)
+        finish()
     }
 }

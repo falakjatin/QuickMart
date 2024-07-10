@@ -16,11 +16,13 @@
         app:title="Your cart" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:visibility="gone">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -79,9 +81,7 @@
                             android:layout_marginTop="16dp"
                             android:text="Shop now" />
 
-
                     </LinearLayout>
-
 
                     <View
                         android:layout_width="match_parent"
@@ -128,5 +128,30 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/llNoUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No User Found." />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Log In" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

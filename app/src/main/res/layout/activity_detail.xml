@@ -38,13 +38,14 @@
                 <TextView
                     android:id="@+id/item_title"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_weight="1"
                     android:text="@string/itemName"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/img_item" />
+
                 <ImageView
                     android:id="@+id/img_cart"
                     android:layout_width="40dp"
@@ -110,11 +111,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:justificationMode="inter_word"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:text="@string/description"
                     android:textColor="@color/black"
-                    android:justificationMode="inter_word"
                     app:layout_constraintStart_toStartOf="@id/tv_desc"
                     app:layout_constraintTop_toBottomOf="@id/tv_desc" />
 
@@ -154,8 +155,9 @@
                         android:id="@+id/tvQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:layout_marginHorizontal="8dp" />
+                        android:layout_marginHorizontal="8dp"
+                        android:text="0"
+                        android:textColor="@color/black" />
 
                     <ImageButton
                         android:id="@+id/ibAdd"

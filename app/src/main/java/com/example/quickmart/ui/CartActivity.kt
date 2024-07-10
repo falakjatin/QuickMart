@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,36 +51,54 @@ class CartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
-        storage = FirebaseStorage.getInstance()
-        mAuth = FirebaseAuth.getInstance()
-        currentUser = mAuth!!.currentUser
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        cartReference = firebaseDatabase!!.getReference("carts")
-        rvCart = findViewById(R.id.rvCart)
-        tvGrandTotal = findViewById(R.id.tvGrandTotal)
-        tvSubTotal = findViewById(R.id.tvSubTotal)
-        tvHst = findViewById(R.id.tvHst)
-        btnCheckOut = findViewById(R.id.btnCheckOut)
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        btnCheckOut.setOnClickListener(View.OnClickListener {
-            val i = Intent(
-                this@CartActivity,
-                CheckoutActivity::class.java
-            )
-            startActivity(i)
-        })
-        fetchCartData()
-        btnShop = findViewById(R.id.btnShop)
-        llPlaceHolder = findViewById(R.id.llPlaceHolder)
-        btnShop.setOnClickListener(View.OnClickListener {
-            val intent = Intent(
-                this@CartActivity,
-                ProductActivity::class.java
-            )
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        })
+        mAuth = FirebaseAuth.getInstance()
+        currentUser = mAuth!!.currentUser
+
+        if (currentUser != null) {
+
+            findViewById<ScrollView>(R.id.scrollView2).visibility = View.VISIBLE
+
+            storage = FirebaseStorage.getInstance()
+            firebaseDatabase = FirebaseDatabase.getInstance()
+            cartReference = firebaseDatabase!!.getReference("carts")
+            rvCart = findViewById(R.id.rvCart)
+            tvGrandTotal = findViewById(R.id.tvGrandTotal)
+            tvSubTotal = findViewById(R.id.tvSubTotal)
+            tvHst = findViewById(R.id.tvHst)
+            btnCheckOut = findViewById(R.id.btnCheckOut)
+            btnCheckOut.setOnClickListener(View.OnClickListener {
+                val i = Intent(
+                    this@CartActivity,
+                    CheckoutActivity::class.java
+                )
+                startActivity(i)
+            })
+            fetchCartData()
+            btnShop = findViewById(R.id.btnShop)
+            llPlaceHolder = findViewById(R.id.llPlaceHolder)
+            btnShop.setOnClickListener(View.OnClickListener {
+                val intent = Intent(
+                    this@CartActivity,
+                    ProductActivity::class.java
+                )
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            })
+        } else {
+            findViewById<LinearLayout>(R.id.llNoUser).visibility = View.VISIBLE
+
+            findViewById<Button>(R.id.btnLogin).setOnClickListener(View.OnClickListener {
+                val i = Intent(
+                    this@CartActivity,
+                    AuthSelectionActivity::class.java
+                )
+                startActivity(i)
+                finish()
+            })
+        }
+
     }
 
     private fun fetchCartData() {
@@ -120,8 +139,9 @@ class CartActivity : AppCompatActivity() {
                             total += p.quantity * p.price!!.toDouble()
                         }
                         tvSubTotal!!.text = String.format("Subtotal: $%.2f", total)
-                        tvHst!!.text = String.format("HST(13%%): $%.2f",total * 0.13)
-                        tvGrandTotal!!.text = String.format("Grand Total: $%.2f", total + (total * 0.13))
+                        tvHst!!.text = String.format("HST(13%%): $%.2f", total * 0.13)
+                        tvGrandTotal!!.text =
+                            String.format("Grand Total: $%.2f", total + (total * 0.13))
                     }
 
                     override fun onCancelled(error: DatabaseError) {
@@ -156,5 +176,11 @@ class CartActivity : AppCompatActivity() {
         if (progressDialog != null) {
             progressDialog!!.cancel()
         }
+    }
+
+    private fun transferToLogin() {
+        val i = Intent(this@CartActivity, CartActivity::class.java)
+        startActivity(i)
+        finish()
     }
 }

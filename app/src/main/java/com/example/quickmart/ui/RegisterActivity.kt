@@ -132,21 +132,19 @@ class RegisterActivity : AppCompatActivity() {
                 showProgressDialog()
                 progressBar.visibility = View.VISIBLE
                 mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(object : OnCompleteListener<AuthResult?> {
-                        override fun onComplete(task: Task<AuthResult?>) {
-                            progressBar.visibility = View.GONE
-                            hideProgressDialog()
-                            if (task.isSuccessful) {
-                                addUser(email, password, firstName, lastName, mobileNo)
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Toast.makeText(
-                                    this@RegisterActivity, "Invalid credentials",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                    .addOnCompleteListener { task ->
+                        progressBar.visibility = View.GONE
+                        hideProgressDialog()
+                        if (task.isSuccessful) {
+                            addUser(email, password, firstName, lastName, mobileNo)
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(
+                                this@RegisterActivity, "Invalid credentials",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    })
+                    }
             }
         })
     }

@@ -19,30 +19,8 @@ class MainActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
         val auth = FirebaseAuth.getInstance()
 
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val btnRegister = findViewById<Button>(R.id.btnRegister)
-
-        if (auth.currentUser != null) {
-            val productIntent = Intent(this, ProductActivity::class.java)
-            startActivity(productIntent)
-            finish()
-        }
-
-        btnLogin.setOnClickListener(View.OnClickListener {
-            val i = Intent(
-                this@MainActivity,
-                LoginActivity::class.java
-            )
-            startActivity(i)
-            finish()
-        })
-        btnRegister.setOnClickListener(View.OnClickListener {
-            val i = Intent(
-                this@MainActivity,
-                RegisterActivity::class.java
-            )
-            startActivity(i)
-            finish()
-        })
+        val productIntent = Intent(this, ProductActivity::class.java)
+        startActivity(productIntent)
+        finish()
     }
 }
