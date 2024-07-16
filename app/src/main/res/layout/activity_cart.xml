@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:navigationIconTint="@color/textColor"
         app:navigationIcon="@drawable/baseline_arrow_back"
         app:title="Your cart" />
 

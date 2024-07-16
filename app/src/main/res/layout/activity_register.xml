@@ -20,14 +20,14 @@
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@drawable/logo" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Indian Superstore"
+            android:text="QuickMart"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -40,6 +40,7 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="@string/register"
+            android:textColor="@color/textColor"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -52,6 +53,8 @@
                 android:id="@+id/etFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor"
                 android:hint="First name" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,6 +68,7 @@
                 android:id="@+id/etLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:hint="Last name" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,6 +151,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
                 android:text="Already have an account?" />
 
             <TextView
@@ -155,6 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:gravity="center"
+                android:textColor="@color/textColor"
                 android:text="@string/login"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textStyle="bold" />

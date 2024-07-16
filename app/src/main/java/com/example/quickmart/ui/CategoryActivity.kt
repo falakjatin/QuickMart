@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.quickmart.R
 import com.example.quickmart.adapters.ProductsAdapter
 import com.example.quickmart.models.ProductModel
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -19,7 +20,7 @@ import com.google.firebase.storage.FirebaseStorage
 
 class CategoryActivity : AppCompatActivity() {
     lateinit var rvProducts: RecyclerView
-    lateinit var toolbar: Toolbar
+    lateinit var toolbar: MaterialToolbar
     private var db: FirebaseDatabase? = null
     private var productReference: DatabaseReference? = null
     private lateinit var list: ArrayList<ProductModel>

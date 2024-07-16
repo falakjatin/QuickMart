@@ -31,6 +31,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerInside"
+                    app:tint="@color/textColor"
                     android:src="@drawable/baseline_arrow_back"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -115,7 +116,7 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:text="@string/description"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColor"
                     app:layout_constraintStart_toStartOf="@id/tv_desc"
                     app:layout_constraintTop_toBottomOf="@id/tv_desc" />
 
@@ -146,6 +147,7 @@
 
                     <ImageButton
                         android:id="@+id/ib_minus"
+                        app:tint="@color/textColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@android:color/transparent"
@@ -157,10 +159,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
                         android:text="0"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/textColor" />
 
                     <ImageButton
                         android:id="@+id/ibAdd"
+                        app:tint="@color/textColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@android:color/transparent"

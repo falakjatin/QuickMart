@@ -9,6 +9,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
+        app:navigationIconTint="@color/textColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:navigationIcon="@drawable/baseline_arrow_back"
@@ -22,6 +23,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <Switch
+                android:id="@+id/switchTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Switch Theme"
+                />
 
             <LinearLayout
                 android:id="@+id/llNoUser"
@@ -107,6 +114,8 @@
                     android:layout_height="wrap_content"
                     android:text="Email"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+
 
                 <Button
                     android:id="@+id/btnLogout"

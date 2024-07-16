@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.quickmart.R
 import com.example.quickmart.models.UserModel
 import com.google.android.material.appbar.MaterialToolbar
@@ -30,6 +32,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var tvEmail: TextView
     lateinit var btnLogout: Button
     lateinit var btnLogin: Button
+    lateinit var switchTheme: Switch
     lateinit var auth: FirebaseAuth
     lateinit var database: FirebaseDatabase
     lateinit var userRef: DatabaseReference
@@ -43,6 +46,7 @@ class ProfileActivity : AppCompatActivity() {
         userRef = database.getReference("users")
         currentUser = auth.currentUser
         toolbar = findViewById(R.id.toolbar)
+        switchTheme = findViewById(R.id.switchTheme)
         tvFirstname = findViewById(R.id.tvFirstName)
         tvLastName = findViewById(R.id.tvLastName)
         tvMobileNo = findViewById(R.id.tvMobileNo)
@@ -65,6 +69,13 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(i)
             finish()
         })
+
+        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            AppCompatDelegate.setDefaultNightMode(
+                if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
+                else AppCompatDelegate.MODE_NIGHT_NO
+            )
+        }
     }
 
     private fun changeView(currentUser: FirebaseUser?) {
