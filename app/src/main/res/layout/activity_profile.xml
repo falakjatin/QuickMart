@@ -27,8 +27,7 @@
                 android:id="@+id/switchTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Switch Theme"
-                />
+                android:text="Switch Theme" />
 
             <LinearLayout
                 android:id="@+id/llNoUser"
@@ -115,13 +114,18 @@
                     android:text="Email"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-
+                <Button
+                    android:id="@+id/btnOrderHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Order History" />
 
                 <Button
                     android:id="@+id/btnLogout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:text="Log Out" />
             </LinearLayout>
         </LinearLayout>

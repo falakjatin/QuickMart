@@ -15,6 +15,9 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".ui.OrderHistory"
+            android:exported="false" />
+        <activity
             android:name=".ui.AuthSelectionActivity"
             android:exported="false" />
         <activity

@@ -138,7 +138,6 @@ class RegisterActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             addUser(email, password, firstName, lastName, mobileNo)
                         } else {
-                            // If sign in fails, display a message to the user.
                             Toast.makeText(
                                 this@RegisterActivity, "Invalid credentials",
                                 Toast.LENGTH_SHORT

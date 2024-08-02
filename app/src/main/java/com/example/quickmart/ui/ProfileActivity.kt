@@ -3,7 +3,6 @@ package com.example.quickmart.ui
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -23,7 +22,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-
 class ProfileActivity : AppCompatActivity() {
     lateinit var toolbar: MaterialToolbar
     lateinit var tvFirstname: TextView
@@ -32,19 +30,23 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var tvEmail: TextView
     lateinit var btnLogout: Button
     lateinit var btnLogin: Button
+    lateinit var btnOrderHistory: Button
     lateinit var switchTheme: Switch
     lateinit var auth: FirebaseAuth
     lateinit var database: FirebaseDatabase
     lateinit var userRef: DatabaseReference
     var currentUser: FirebaseUser? = null
     private lateinit var progressDialog: Dialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         userRef = database.getReference("users")
         currentUser = auth.currentUser
+
         toolbar = findViewById(R.id.toolbar)
         switchTheme = findViewById(R.id.switchTheme)
         tvFirstname = findViewById(R.id.tvFirstName)
@@ -53,28 +55,33 @@ class ProfileActivity : AppCompatActivity() {
         tvEmail = findViewById(R.id.tvEmail)
         btnLogout = findViewById(R.id.btnLogout)
         btnLogin = findViewById(R.id.btnLogin)
-        toolbar.setNavigationOnClickListener(View.OnClickListener { onBackPressed() })
+        btnOrderHistory = findViewById(R.id.btnOrderHistory)
 
-        this.changeView(currentUser)
-        btnLogout.setOnClickListener(View.OnClickListener {
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+
+        changeView(currentUser)
+
+        btnLogout.setOnClickListener {
             auth.signOut()
-            this.changeView(null)
-        })
+            changeView(null)
+        }
 
-        btnLogin.setOnClickListener(View.OnClickListener {
-            val i = Intent(
-                this@ProfileActivity,
-                AuthSelectionActivity::class.java
-            )
-            startActivity(i)
+        btnLogin.setOnClickListener {
+            val intent = Intent(this@ProfileActivity, AuthSelectionActivity::class.java)
+            startActivity(intent)
             finish()
-        })
+        }
 
         switchTheme.setOnCheckedChangeListener { _, isChecked ->
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
                 else AppCompatDelegate.MODE_NIGHT_NO
             )
+        }
+
+        btnOrderHistory.setOnClickListener {
+            val intent = Intent(this@ProfileActivity, OrderHistory::class.java)
+            startActivity(intent)
         }
     }
 
@@ -103,7 +110,6 @@ class ProfileActivity : AppCompatActivity() {
                                 tvLastName.text = user.lastname
                                 tvMobileNo.text = user.mobileno
                                 tvEmail.text = user.email
-
                             }
                         }
 
@@ -123,7 +129,6 @@ class ProfileActivity : AppCompatActivity() {
             setCancelable(false)
             show()
         }
-
     }
 
     private fun hideProgressDialog() {

@@ -25,8 +25,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import java.text.DecimalFormat
-
 
 class CartActivity : AppCompatActivity() {
     private val TAG = "CheckoutActivity"
@@ -46,8 +44,9 @@ class CartActivity : AppCompatActivity() {
     var storage: FirebaseStorage? = null
     var currentUser: FirebaseUser? = null
     var mAuth: FirebaseAuth? = null
-    private var cartList: ArrayList<CartProductModel>? = null
+    private var cartList: ArrayList<CartProductModel> = ArrayList()
     private var progressDialog: Dialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
@@ -57,7 +56,6 @@ class CartActivity : AppCompatActivity() {
         currentUser = mAuth!!.currentUser
 
         if (currentUser != null) {
-
             findViewById<ScrollView>(R.id.scrollView2).visibility = View.VISIBLE
 
             storage = FirebaseStorage.getInstance()
@@ -68,37 +66,28 @@ class CartActivity : AppCompatActivity() {
             tvSubTotal = findViewById(R.id.tvSubTotal)
             tvHst = findViewById(R.id.tvHst)
             btnCheckOut = findViewById(R.id.btnCheckOut)
-            btnCheckOut.setOnClickListener(View.OnClickListener {
-                val i = Intent(
-                    this@CartActivity,
-                    CheckoutActivity::class.java
-                )
-                startActivity(i)
-            })
+            btnCheckOut.setOnClickListener {
+                val intent = Intent(this@CartActivity, CheckoutActivity::class.java)
+                intent.putExtra("cartItems", cartList)
+                startActivity(intent)
+            }
             fetchCartData()
             btnShop = findViewById(R.id.btnShop)
             llPlaceHolder = findViewById(R.id.llPlaceHolder)
-            btnShop.setOnClickListener(View.OnClickListener {
-                val intent = Intent(
-                    this@CartActivity,
-                    ProductActivity::class.java
-                )
+            btnShop.setOnClickListener {
+                val intent = Intent(this@CartActivity, ProductActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-            })
+            }
         } else {
             findViewById<LinearLayout>(R.id.llNoUser).visibility = View.VISIBLE
 
-            findViewById<Button>(R.id.btnLogin).setOnClickListener(View.OnClickListener {
-                val i = Intent(
-                    this@CartActivity,
-                    AuthSelectionActivity::class.java
-                )
+            findViewById<Button>(R.id.btnLogin).setOnClickListener {
+                val i = Intent(this@CartActivity, AuthSelectionActivity::class.java)
                 startActivity(i)
                 finish()
-            })
+            }
         }
-
     }
 
     private fun fetchCartData() {
@@ -108,24 +97,22 @@ class CartActivity : AppCompatActivity() {
                 ?.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         hideProgressDialog()
-                        cartList = ArrayList()
+                        cartList.clear()
                         for (item in snapshot.children) {
-                            item.getValue(CartProductModel::class.java)?.let { cartList!!.add(it) }
+                            item.getValue(CartProductModel::class.java)?.let { cartList.add(it) }
                         }
-                        if (cartList!!.size == 0) {
+                        if (cartList.size == 0) {
                             llPlaceHolder!!.visibility = View.VISIBLE
                         } else {
                             llPlaceHolder!!.visibility = View.GONE
                         }
-                        val adapter =
-                            storage?.let { CartAdapter(this@CartActivity, cartList!!, it) }
+                        val adapter = storage?.let { CartAdapter(this@CartActivity, cartList, it) }
                         rvCart!!.adapter = adapter
-                        val layoutManager =
-                            LinearLayoutManager(
-                                this@CartActivity,
-                                LinearLayoutManager.VERTICAL,
-                                false
-                            )
+                        val layoutManager = LinearLayoutManager(
+                            this@CartActivity,
+                            LinearLayoutManager.VERTICAL,
+                            false
+                        )
                         rvCart!!.layoutManager = layoutManager
                         rvCart!!.setHasFixedSize(true)
                         adapter!!.setOnDeleteClickListener(object :
@@ -135,7 +122,7 @@ class CartActivity : AppCompatActivity() {
                             }
                         })
                         var total = 0.0
-                        for (p in cartList!!) {
+                        for (p in cartList) {
                             total += p.quantity * p.price!!.toDouble()
                         }
                         tvSubTotal!!.text = String.format("Subtotal: $%.2f", total)
@@ -155,7 +142,7 @@ class CartActivity : AppCompatActivity() {
     private fun deleteItem(productName: String) {
         showProgressDialog()
         currentUser?.let {
-            cartReference?.child(it.getUid())?.child(productName)
+            cartReference?.child(it.uid)?.child(productName)
                 ?.removeValue { error, _ ->
                     hideProgressDialog()
                     if (error == null) {

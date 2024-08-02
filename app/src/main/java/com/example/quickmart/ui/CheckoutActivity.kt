@@ -12,6 +12,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quickmart.R
+import com.example.quickmart.models.CartProductModel
 import com.example.quickmart.models.FormModel
 import com.example.quickmart.models.UserModel
 import com.example.quickmart.utils.ValidationUtil
@@ -67,6 +68,7 @@ class CheckoutActivity : AppCompatActivity() {
     var userRef: DatabaseReference? = null
     var currentUser: FirebaseUser? = null
     private var progressDialog: Dialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check_out)
@@ -105,36 +107,12 @@ class CheckoutActivity : AppCompatActivity() {
         layoutCard = findViewById(R.id.layoutCard)
         toolbar = findViewById(R.id.toolbar)
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder)
-        toolbar.setNavigationOnClickListener(View.OnClickListener { onBackPressed() })
-        btnPlaceOrder.setOnClickListener(View.OnClickListener {
-            val validate = ValidationUtil(form)
-            if (validate.isAllValid) {
-                val dialog = MaterialAlertDialogBuilder(this@CheckoutActivity)
-                dialog.setTitle("Successful")
-                dialog.setMessage("Order has been received and will be placed soon.")
-                dialog.setCancelable(false)
-                dialog.setPositiveButton(
-                    "Continue Shopping"
-                ) { dialog, which ->
-                    dialog.cancel()
-                    val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-                    val cartReference: DatabaseReference = database.getReference("carts")
-                    val user: FirebaseUser? = FirebaseAuth.getInstance().getCurrentUser()
-                    if (user != null) {
-                        cartReference.child(user.getUid()).removeValue()
-                    }
-                    val homeIntent = Intent(
-                        this@CheckoutActivity,
-                        ProductActivity::class.java
-                    )
-                    startActivity(homeIntent)
-                    finish()
-                }
-                dialog.show()
-            }
-        })
-        userData
-        rgPaymentMode.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+        btnPlaceOrder.setOnClickListener {
+            placeOrder()
+        }
+
+        rgPaymentMode.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == R.id.rbCOD) {
                 layoutCard.visibility = View.GONE
                 setFormForCOD()
@@ -143,11 +121,75 @@ class CheckoutActivity : AppCompatActivity() {
                 layoutCard.visibility = View.VISIBLE
                 setFormForCard()
             }
-        })
+        }
+
+        userData
+    }
+
+    private fun placeOrder() {
+        showProgressDialog()
+
+        // Prepare order details
+        val orderDetails = HashMap<String, Any>()
+        orderDetails["firstName"] = Objects.requireNonNull<Editable>(etFirstName?.text).toString()
+        orderDetails["lastName"] = Objects.requireNonNull<Editable>(etLastName?.text).toString()
+        orderDetails["mobileNumber"] = Objects.requireNonNull<Editable>(etMobileNo?.text).toString()
+        orderDetails["email"] = Objects.requireNonNull<Editable>(etEmail?.text).toString()
+        orderDetails["streetAddress"] = Objects.requireNonNull<Editable>(etStreetAddr?.text).toString()
+        orderDetails["city"] = Objects.requireNonNull<Editable>(etCity?.text).toString()
+        orderDetails["postalCode"] = Objects.requireNonNull<Editable>(etPostal?.text).toString()
+        orderDetails["province"] = Objects.requireNonNull<Editable>(etProvince?.text).toString()
+
+        if (rgPaymentMode.checkedRadioButtonId == R.id.rbDebit) {
+            orderDetails["paymentMode"] = "Debit Card"
+            orderDetails["cardHolderName"] = Objects.requireNonNull<Editable>(etCardHolder?.text).toString()
+            orderDetails["cardNumber"] = Objects.requireNonNull<Editable>(etCardNumb?.text).toString()
+            orderDetails["expiryDate"] = Objects.requireNonNull<Editable>(etExpDate?.text).toString()
+            orderDetails["cvv"] = Objects.requireNonNull<Editable>(etCvv?.text).toString()
+        } else {
+            orderDetails["paymentMode"] = "Cash on Delivery"
+        }
+
+        // Retrieve cart items
+        val cartList = intent.getSerializableExtra("cartItems") as ArrayList<CartProductModel>
+
+        // Prepare order items
+        val orderItems = ArrayList<HashMap<String, Any>>()
+        for (cartProduct in cartList) {
+            val itemDetails = HashMap<String, Any>()
+            itemDetails["imageUrl"] = cartProduct.imageUrl ?: ""
+            itemDetails["price"] = cartProduct.price ?: 0.0
+            itemDetails["productName"] = cartProduct.name ?: ""
+            itemDetails["quantity"] = cartProduct.quantity
+            orderItems.add(itemDetails)
+        }
+        orderDetails["orderItems"] = orderItems
+
+        // Save order details and clear cart
+        val orderReference = database!!.getReference("orders")
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val userOrderRef = orderReference.child(user.uid).push()
+            userOrderRef.setValue(orderDetails).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Clear the cart after placing the order
+                    clearCart(user.uid)
+                    hideProgressDialog()
+                    // Show success dialog and handle continuation
+                    showSuccessDialog()
+                } else {
+                    hideProgressDialog()
+                    Toast.makeText(this@CheckoutActivity, "Failed to place order", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            hideProgressDialog()
+            Toast.makeText(this@CheckoutActivity, "User not logged in", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private val userData: Unit
-        private get() {
+        get() {
             showProgressDialog()
             currentUser?.let {
                 userRef?.child(it.uid)
@@ -176,6 +218,11 @@ class CheckoutActivity : AppCompatActivity() {
             }
         }
 
+    private fun clearCart(userId: String) {
+        val cartReference = database!!.getReference("carts").child(userId)
+        cartReference.removeValue()
+    }
+
     private fun showProgressDialog() {
         progressDialog = Dialog(this)
         progressDialog!!.setContentView(R.layout.dialog_progress)
@@ -184,123 +231,48 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun hideProgressDialog() {
-        if (progressDialog != null) {
-            progressDialog!!.cancel()
-        }
+        progressDialog?.dismiss()
     }
 
     private fun setFormForCOD() {
         form = arrayOfNulls(8)
-        form[0] = FormModel(
-            "default",
-            firstNameLt!!, Objects.requireNonNull<Editable>(etFirstName?.text).toString(), "", ""
-        )
-        form[1] = FormModel(
-            "default",
-            lastNameLt!!, Objects.requireNonNull<Editable>(etLastName?.text).toString(), "", ""
-        )
-        form[2] = FormModel(
-            "email",
-            emailLt!!, Objects.requireNonNull<Editable>(etEmail?.text).toString(), "", ""
-        )
-        form[3] = FormModel(
-            "mobile",
-            mobileNumbLt!!,
-            Objects.requireNonNull<Editable>(etMobileNo?.text).toString(),
-            "",
-            ""
-        )
-        form[4] = FormModel(
-            "default",
-            streetAddrLt!!,
-            Objects.requireNonNull<Editable>(etStreetAddr?.text).toString(),
-            "",
-            ""
-        )
-        form[5] = FormModel(
-            "no_numeric_special",
-            cityLt!!,
-            Objects.requireNonNull<Editable>(etCity?.text).toString(),
-            "Please enter a valid city name.",
-            ""
-        )
-        form[6] = FormModel(
-            "postal",
-            postalLt!!, Objects.requireNonNull<Editable>(etPostal?.text).toString(), "", ""
-        )
-        form[7] = FormModel(
-            "no_numeric_special",
-            provinceLt!!,
-            Objects.requireNonNull<Editable>(etProvince?.text).toString(),
-            "Please enter a valid province name.",
-            ""
-        )
+        form[0] = FormModel("default", firstNameLt!!, Objects.requireNonNull<Editable>(etFirstName?.text).toString(), "", "")
+        form[1] = FormModel("default", lastNameLt!!, Objects.requireNonNull<Editable>(etLastName?.text).toString(), "", "")
+        form[2] = FormModel("email", emailLt!!, Objects.requireNonNull<Editable>(etEmail?.text).toString(), "", "")
+        form[3] = FormModel("mobile", mobileNumbLt!!, Objects.requireNonNull<Editable>(etMobileNo?.text).toString(), "", "")
+        form[4] = FormModel("default", streetAddrLt!!, Objects.requireNonNull<Editable>(etStreetAddr?.text).toString(), "", "")
+        form[5] = FormModel("no_numeric_special", cityLt!!, Objects.requireNonNull<Editable>(etCity?.text).toString(), "Please enter a valid city name.", "")
+        form[6] = FormModel("postal", postalLt!!, Objects.requireNonNull<Editable>(etPostal?.text).toString(), "", "")
+        form[7] = FormModel("no_numeric_special", provinceLt!!, Objects.requireNonNull<Editable>(etProvince?.text).toString(), "Please enter a valid province name.", "")
     }
 
     private fun setFormForCard() {
         form = arrayOfNulls(12)
-        form[0] = FormModel(
-            "default",
-            firstNameLt!!, Objects.requireNonNull<Editable>(etFirstName?.text).toString(), "", ""
-        )
-        form[1] = FormModel(
-            "default",
-            lastNameLt!!, Objects.requireNonNull<Editable>(etLastName?.text).toString(), "", ""
-        )
-        form[2] = FormModel(
-            "email",
-            emailLt!!, Objects.requireNonNull<Editable>(etEmail?.text).toString(), "", ""
-        )
-        form[3] = FormModel(
-            "mobile",
-            mobileNumbLt!!,
-            Objects.requireNonNull<Editable>(etMobileNo?.text).toString(),
-            "",
-            ""
-        )
-        form[4] = FormModel(
-            "default",
-            streetAddrLt!!,
-            Objects.requireNonNull<Editable>(etStreetAddr?.text).toString(),
-            "",
-            ""
-        )
-        form[5] = FormModel(
-            "no_numeric_special",
-            cityLt!!,
-            Objects.requireNonNull<Editable>(etCity?.text).toString(),
-            "Please enter a valid city name.",
-            ""
-        )
-        form[6] = FormModel(
-            "postal",
-            postalLt!!, Objects.requireNonNull<Editable>(etPostal?.text).toString(), "", ""
-        )
-        form[7] = FormModel(
-            "no_numeric_special",
-            provinceLt!!,
-            Objects.requireNonNull<Editable>(etProvince?.text).toString(),
-            "Please enter a valid province name.",
-            ""
-        )
-        form[8] = FormModel(
-            "default",
-            cardHolderLt!!,
-            Objects.requireNonNull<Editable>(etCardHolder?.text).toString(),
-            "",
-            ""
-        )
-        form[9] = FormModel(
-            "default",
-            cardNumbLt!!, Objects.requireNonNull<Editable>(etCardNumb?.text).toString(), "", ""
-        )
-        form[10] = FormModel(
-            "default",
-            expDateLt!!, Objects.requireNonNull<Editable>(etExpDate?.text).toString(), "", ""
-        )
-        form[11] = FormModel(
-            "cvv",
-            cvvLt!!, Objects.requireNonNull(etCvv?.text).toString(), "", ""
-        )
+        form[0] = FormModel("default", firstNameLt!!, Objects.requireNonNull<Editable>(etFirstName?.text).toString(), "", "")
+        form[1] = FormModel("default", lastNameLt!!, Objects.requireNonNull<Editable>(etLastName?.text).toString(), "", "")
+        form[2] = FormModel("email", emailLt!!, Objects.requireNonNull<Editable>(etEmail?.text).toString(), "", "")
+        form[3] = FormModel("mobile", mobileNumbLt!!, Objects.requireNonNull<Editable>(etMobileNo?.text).toString(), "", "")
+        form[4] = FormModel("default", streetAddrLt!!, Objects.requireNonNull<Editable>(etStreetAddr?.text).toString(), "", "")
+        form[5] = FormModel("no_numeric_special", cityLt!!, Objects.requireNonNull<Editable>(etCity?.text).toString(), "Please enter a valid city name.", "")
+        form[6] = FormModel("postal", postalLt!!, Objects.requireNonNull<Editable>(etPostal?.text).toString(), "", "")
+        form[7] = FormModel("no_numeric_special", provinceLt!!, Objects.requireNonNull<Editable>(etProvince?.text).toString(), "Please enter a valid province name.", "")
+        form[8] = FormModel("default", cardHolderLt!!, Objects.requireNonNull<Editable>(etCardHolder?.text).toString(), "", "")
+        form[9] = FormModel("default", cardNumbLt!!, Objects.requireNonNull<Editable>(etCardNumb?.text).toString(), "", "")
+        form[10] = FormModel("default", expDateLt!!, Objects.requireNonNull<Editable>(etExpDate?.text).toString(), "", "")
+        form[11] = FormModel("cvv", cvvLt!!, Objects.requireNonNull(etCvv?.text).toString(), "", "")
+    }
+
+    private fun showSuccessDialog() {
+        val dialog = MaterialAlertDialogBuilder(this@CheckoutActivity)
+        dialog.setTitle("Successful")
+        dialog.setMessage("Order has been received and will be placed soon.")
+        dialog.setCancelable(false)
+        dialog.setPositiveButton("Continue Shopping") { dialog, which ->
+            dialog.cancel()
+            val homeIntent = Intent(this@CheckoutActivity, ProductActivity::class.java)
+            startActivity(homeIntent)
+            finish()
+        }
+        dialog.show()
     }
 }
