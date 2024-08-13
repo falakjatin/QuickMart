@@ -4,106 +4,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg1"
-    android:gravity="center"
     android:orientation="vertical"
-    android:padding="24dp"
     tools:context=".ui.LoginActivity">
 
-    <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/logo" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="QuickMart"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <TextView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="@string/login"
-        android:textColor="@color/textColor"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:background="@color/colorPrimary"
+        app:navigationIcon="@drawable/baseline_arrow_back"
+        app:title="Login"
+        app:titleTextColor="@color/white"
+        app:titleCentered="true"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailLt"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:gravity="center">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/textColor"
-
-            android:hint="@string/Email" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordLt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:passwordToggleEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/textColor"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:textColorHint="@color/textColor"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/btn_shape"
-        android:text="@string/login"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/logo" />
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:text="Don't have an account?" />
+            android:layout_marginTop="16dp"
+            android:text="QuickMart"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <TextView
-            android:id="@+id/registerNow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
+            android:text="@string/login"
             android:textColor="@color/textColor"
-            android:text="@string/register"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textSize="25sp"
             android:textStyle="bold" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Email"
+                android:textColor="@color/textColor"
+
+                android:textColorHint="@color/textColor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordLt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/btn_shape"
+            android:text="@string/login"
+            android:textColorHint="@color/textColor"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account?"
+                android:textColor="@color/textColor" />
+
+            <TextView
+                android:id="@+id/registerNow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:gravity="center"
+                android:text="@string/register"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:textColor="@color/textColor"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 </LinearLayout>

@@ -16,6 +16,7 @@ import com.example.quickmart.models.UserModel
 import com.example.quickmart.utils.ValidationUtil
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.AuthResult
@@ -50,6 +51,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var firebaseDatabase: FirebaseDatabase
     lateinit var userReference: DatabaseReference
     private lateinit var form: Array<FormModel?>
+    lateinit var toolbar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +74,8 @@ class RegisterActivity : AppCompatActivity() {
         ltLastName = findViewById(R.id.etLastName_layout)
         ltMobileNo = findViewById(R.id.etMobileNo_layout)
         ltConfirmPassword = findViewById(R.id.etPasswordConfirm_layout)
+        toolbar = findViewById(R.id.toolbar)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
 
         textView.setOnClickListener(View.OnClickListener {
             val intent = Intent(

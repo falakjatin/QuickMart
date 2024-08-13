@@ -201,7 +201,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun transferToLogin() {
-        val i = Intent(this@DetailActivity, AuthSelectionActivity::class.java)
+        val i = Intent(this@DetailActivity, LoginActivity::class.java)
         startActivity(i)
         finish()
     }

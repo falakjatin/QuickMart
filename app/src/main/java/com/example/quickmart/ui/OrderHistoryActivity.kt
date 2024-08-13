@@ -1,8 +1,6 @@
 package com.example.quickmart.ui
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,17 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.quickmart.R
 import com.example.quickmart.models.OrderItem
 import com.example.quickmart.adapters.OrderItemAdapter
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 
-class OrderHistory : AppCompatActivity() {
+class OrderHistoryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
     private lateinit var ordersRef: DatabaseReference
     private lateinit var orderItemAdapter: OrderItemAdapter
     private lateinit var storageReference: FirebaseStorage
     private val orderItemList = mutableListOf<OrderItem>()
+    lateinit var toolbar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +30,9 @@ class OrderHistory : AppCompatActivity() {
         database = FirebaseDatabase.getInstance()
         ordersRef = database.getReference("orders")
         storageReference = FirebaseStorage.getInstance()
+        toolbar = findViewById(R.id.toolbar)
+
+        toolbar.setNavigationOnClickListener { onBackPressed() }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewOrderHistory)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -56,7 +59,7 @@ class OrderHistory : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@OrderHistory, "Failed to load order history.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@OrderHistoryActivity, "Failed to load order history.", Toast.LENGTH_SHORT).show()
                 }
             })
         }

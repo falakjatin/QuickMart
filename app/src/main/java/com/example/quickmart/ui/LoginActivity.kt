@@ -3,8 +3,6 @@ package com.example.quickmart.ui
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -12,15 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.quickmart.R
 import com.example.quickmart.models.FormModel
 import com.example.quickmart.utils.ValidationUtil
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import java.util.Objects
 import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity() {
@@ -34,12 +29,14 @@ class LoginActivity : AppCompatActivity() {
     private var progressDialog: ProgressDialog? = null
     private var firebaseDatabase: FirebaseDatabase? = null
     private var userReference: DatabaseReference? = null
+    lateinit var toolbar: MaterialToolbar
 
     private lateinit var form: Array<FormModel?>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        toolbar = findViewById(R.id.toolbar)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
         firebaseDatabase = FirebaseDatabase.getInstance()
         userReference = firebaseDatabase!!.getReference("users")
         mAuth = FirebaseAuth.getInstance()
@@ -87,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             )
                                 .show()
-                            val intent = Intent(applicationContext, ProductActivity::class.java)
+                            val intent = Intent(applicationContext, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else {

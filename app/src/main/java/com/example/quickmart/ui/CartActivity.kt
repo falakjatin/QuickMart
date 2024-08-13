@@ -75,7 +75,7 @@ class CartActivity : AppCompatActivity() {
             btnShop = findViewById(R.id.btnShop)
             llPlaceHolder = findViewById(R.id.llPlaceHolder)
             btnShop.setOnClickListener {
-                val intent = Intent(this@CartActivity, ProductActivity::class.java)
+                val intent = Intent(this@CartActivity, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
@@ -83,7 +83,7 @@ class CartActivity : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.llNoUser).visibility = View.VISIBLE
 
             findViewById<Button>(R.id.btnLogin).setOnClickListener {
-                val i = Intent(this@CartActivity, AuthSelectionActivity::class.java)
+                val i = Intent(this@CartActivity, LoginActivity::class.java)
                 startActivity(i)
                 finish()
             }

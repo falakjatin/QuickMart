@@ -9,11 +9,27 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        app:navigationIconTint="@color/textColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         app:navigationIcon="@drawable/baseline_arrow_back"
-        app:title="Personal Information" />
+        app:title="Personal Information"
+        app:titleCentered="true"
+        app:titleTextColor="@color/white" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:cardElevation="80dp">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_account" />
+    </androidx.cardview.widget.CardView>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,33 +39,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <Switch
-                android:id="@+id/switchTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Switch Theme" />
 
-            <LinearLayout
-                android:id="@+id/llNoUser"
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:padding="24dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No User Found." />
-
-                <Button
-                    android:id="@+id/btnLogin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="Log In" />
-            </LinearLayout>
+                android:text="Switch Theme" />
 
             <LinearLayout
                 android:id="@+id/llUserInfo"
@@ -127,6 +123,28 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Log Out" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llNoUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No User Found." />
+
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Log In" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

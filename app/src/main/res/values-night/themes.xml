@@ -1,6 +1,6 @@
 <resources>
     <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">@color/md_theme_primary</item>
+        <item name="colorPrimary">#AAC7FF</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer</item>
@@ -46,5 +46,6 @@
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
     </style>
 </resources>

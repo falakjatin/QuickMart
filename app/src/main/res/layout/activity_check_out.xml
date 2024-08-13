@@ -10,11 +10,13 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIconTint="@color/textColor"
+        android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/baseline_arrow_back"
-        app:title="@string/checkout" />
+        app:title="@string/checkout"
+        app:titleCentered="true"
+        app:titleTextColor="@color/white" />
 
     <ScrollView
         android:layout_width="match_parent"

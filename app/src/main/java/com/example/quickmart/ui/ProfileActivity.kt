@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.quickmart.R
 import com.example.quickmart.models.UserModel
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -31,7 +31,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var btnLogout: Button
     lateinit var btnLogin: Button
     lateinit var btnOrderHistory: Button
-    lateinit var switchTheme: Switch
+    lateinit var switchTheme: SwitchMaterial
     lateinit var auth: FirebaseAuth
     lateinit var database: FirebaseDatabase
     lateinit var userRef: DatabaseReference
@@ -67,7 +67,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-            val intent = Intent(this@ProfileActivity, AuthSelectionActivity::class.java)
+            val intent = Intent(this@ProfileActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -80,7 +80,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         btnOrderHistory.setOnClickListener {
-            val intent = Intent(this@ProfileActivity, OrderHistory::class.java)
+            val intent = Intent(this@ProfileActivity, OrderHistoryActivity::class.java)
             startActivity(intent)
         }
     }

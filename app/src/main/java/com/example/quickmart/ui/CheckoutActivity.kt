@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -109,7 +108,10 @@ class CheckoutActivity : AppCompatActivity() {
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder)
         toolbar.setNavigationOnClickListener { onBackPressed() }
         btnPlaceOrder.setOnClickListener {
-            placeOrder()
+            val validate = ValidationUtil(form)
+            if (validate.isAllValid) {
+                placeOrder()
+            }
         }
 
         rgPaymentMode.setOnCheckedChangeListener { group, checkedId ->
@@ -135,16 +137,20 @@ class CheckoutActivity : AppCompatActivity() {
         orderDetails["lastName"] = Objects.requireNonNull<Editable>(etLastName?.text).toString()
         orderDetails["mobileNumber"] = Objects.requireNonNull<Editable>(etMobileNo?.text).toString()
         orderDetails["email"] = Objects.requireNonNull<Editable>(etEmail?.text).toString()
-        orderDetails["streetAddress"] = Objects.requireNonNull<Editable>(etStreetAddr?.text).toString()
+        orderDetails["streetAddress"] =
+            Objects.requireNonNull<Editable>(etStreetAddr?.text).toString()
         orderDetails["city"] = Objects.requireNonNull<Editable>(etCity?.text).toString()
         orderDetails["postalCode"] = Objects.requireNonNull<Editable>(etPostal?.text).toString()
         orderDetails["province"] = Objects.requireNonNull<Editable>(etProvince?.text).toString()
 
         if (rgPaymentMode.checkedRadioButtonId == R.id.rbDebit) {
             orderDetails["paymentMode"] = "Debit Card"
-            orderDetails["cardHolderName"] = Objects.requireNonNull<Editable>(etCardHolder?.text).toString()
-            orderDetails["cardNumber"] = Objects.requireNonNull<Editable>(etCardNumb?.text).toString()
-            orderDetails["expiryDate"] = Objects.requireNonNull<Editable>(etExpDate?.text).toString()
+            orderDetails["cardHolderName"] =
+                Objects.requireNonNull<Editable>(etCardHolder?.text).toString()
+            orderDetails["cardNumber"] =
+                Objects.requireNonNull<Editable>(etCardNumb?.text).toString()
+            orderDetails["expiryDate"] =
+                Objects.requireNonNull<Editable>(etExpDate?.text).toString()
             orderDetails["cvv"] = Objects.requireNonNull<Editable>(etCvv?.text).toString()
         } else {
             orderDetails["paymentMode"] = "Cash on Delivery"
@@ -179,7 +185,11 @@ class CheckoutActivity : AppCompatActivity() {
                     showSuccessDialog()
                 } else {
                     hideProgressDialog()
-                    Toast.makeText(this@CheckoutActivity, "Failed to place order", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@CheckoutActivity,
+                        "Failed to place order",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         } else {
@@ -236,29 +246,143 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun setFormForCOD() {
         form = arrayOfNulls(8)
-        form[0] = FormModel("default", firstNameLt!!, Objects.requireNonNull<Editable>(etFirstName?.text).toString(), "", "")
-        form[1] = FormModel("default", lastNameLt!!, Objects.requireNonNull<Editable>(etLastName?.text).toString(), "", "")
-        form[2] = FormModel("email", emailLt!!, Objects.requireNonNull<Editable>(etEmail?.text).toString(), "", "")
-        form[3] = FormModel("mobile", mobileNumbLt!!, Objects.requireNonNull<Editable>(etMobileNo?.text).toString(), "", "")
-        form[4] = FormModel("default", streetAddrLt!!, Objects.requireNonNull<Editable>(etStreetAddr?.text).toString(), "", "")
-        form[5] = FormModel("no_numeric_special", cityLt!!, Objects.requireNonNull<Editable>(etCity?.text).toString(), "Please enter a valid city name.", "")
-        form[6] = FormModel("postal", postalLt!!, Objects.requireNonNull<Editable>(etPostal?.text).toString(), "", "")
-        form[7] = FormModel("no_numeric_special", provinceLt!!, Objects.requireNonNull<Editable>(etProvince?.text).toString(), "Please enter a valid province name.", "")
+        form[0] = FormModel(
+            "default",
+            firstNameLt!!,
+            Objects.requireNonNull<Editable>(etFirstName?.text).toString(),
+            "",
+            ""
+        )
+        form[1] = FormModel(
+            "default",
+            lastNameLt!!,
+            Objects.requireNonNull<Editable>(etLastName?.text).toString(),
+            "",
+            ""
+        )
+        form[2] = FormModel(
+            "email",
+            emailLt!!,
+            Objects.requireNonNull<Editable>(etEmail?.text).toString(),
+            "",
+            ""
+        )
+        form[3] = FormModel(
+            "mobile",
+            mobileNumbLt!!,
+            Objects.requireNonNull<Editable>(etMobileNo?.text).toString(),
+            "",
+            ""
+        )
+        form[4] = FormModel(
+            "default",
+            streetAddrLt!!,
+            Objects.requireNonNull<Editable>(etStreetAddr?.text).toString(),
+            "",
+            ""
+        )
+        form[5] = FormModel(
+            "no_numeric_special",
+            cityLt!!,
+            Objects.requireNonNull<Editable>(etCity?.text).toString(),
+            "Please enter a valid city name.",
+            ""
+        )
+        form[6] = FormModel(
+            "postal",
+            postalLt!!,
+            Objects.requireNonNull<Editable>(etPostal?.text).toString(),
+            "",
+            ""
+        )
+        form[7] = FormModel(
+            "no_numeric_special",
+            provinceLt!!,
+            Objects.requireNonNull<Editable>(etProvince?.text).toString(),
+            "Please enter a valid province name.",
+            ""
+        )
     }
 
     private fun setFormForCard() {
         form = arrayOfNulls(12)
-        form[0] = FormModel("default", firstNameLt!!, Objects.requireNonNull<Editable>(etFirstName?.text).toString(), "", "")
-        form[1] = FormModel("default", lastNameLt!!, Objects.requireNonNull<Editable>(etLastName?.text).toString(), "", "")
-        form[2] = FormModel("email", emailLt!!, Objects.requireNonNull<Editable>(etEmail?.text).toString(), "", "")
-        form[3] = FormModel("mobile", mobileNumbLt!!, Objects.requireNonNull<Editable>(etMobileNo?.text).toString(), "", "")
-        form[4] = FormModel("default", streetAddrLt!!, Objects.requireNonNull<Editable>(etStreetAddr?.text).toString(), "", "")
-        form[5] = FormModel("no_numeric_special", cityLt!!, Objects.requireNonNull<Editable>(etCity?.text).toString(), "Please enter a valid city name.", "")
-        form[6] = FormModel("postal", postalLt!!, Objects.requireNonNull<Editable>(etPostal?.text).toString(), "", "")
-        form[7] = FormModel("no_numeric_special", provinceLt!!, Objects.requireNonNull<Editable>(etProvince?.text).toString(), "Please enter a valid province name.", "")
-        form[8] = FormModel("default", cardHolderLt!!, Objects.requireNonNull<Editable>(etCardHolder?.text).toString(), "", "")
-        form[9] = FormModel("default", cardNumbLt!!, Objects.requireNonNull<Editable>(etCardNumb?.text).toString(), "", "")
-        form[10] = FormModel("default", expDateLt!!, Objects.requireNonNull<Editable>(etExpDate?.text).toString(), "", "")
+        form[0] = FormModel(
+            "default",
+            firstNameLt!!,
+            Objects.requireNonNull<Editable>(etFirstName?.text).toString(),
+            "",
+            ""
+        )
+        form[1] = FormModel(
+            "default",
+            lastNameLt!!,
+            Objects.requireNonNull<Editable>(etLastName?.text).toString(),
+            "",
+            ""
+        )
+        form[2] = FormModel(
+            "email",
+            emailLt!!,
+            Objects.requireNonNull<Editable>(etEmail?.text).toString(),
+            "",
+            ""
+        )
+        form[3] = FormModel(
+            "mobile",
+            mobileNumbLt!!,
+            Objects.requireNonNull<Editable>(etMobileNo?.text).toString(),
+            "",
+            ""
+        )
+        form[4] = FormModel(
+            "default",
+            streetAddrLt!!,
+            Objects.requireNonNull<Editable>(etStreetAddr?.text).toString(),
+            "",
+            ""
+        )
+        form[5] = FormModel(
+            "no_numeric_special",
+            cityLt!!,
+            Objects.requireNonNull<Editable>(etCity?.text).toString(),
+            "Please enter a valid city name.",
+            ""
+        )
+        form[6] = FormModel(
+            "postal",
+            postalLt!!,
+            Objects.requireNonNull<Editable>(etPostal?.text).toString(),
+            "",
+            ""
+        )
+        form[7] = FormModel(
+            "no_numeric_special",
+            provinceLt!!,
+            Objects.requireNonNull<Editable>(etProvince?.text).toString(),
+            "Please enter a valid province name.",
+            ""
+        )
+        form[8] = FormModel(
+            "default",
+            cardHolderLt!!,
+            Objects.requireNonNull<Editable>(etCardHolder?.text).toString(),
+            "",
+            ""
+        )
+        form[9] = FormModel(
+            "default",
+            cardNumbLt!!,
+            Objects.requireNonNull<Editable>(etCardNumb?.text).toString(),
+            "",
+            ""
+        )
+        form[10] = FormModel(
+            "default",
+            expDateLt!!,
+            Objects.requireNonNull<Editable>(etExpDate?.text).toString(),
+            "",
+            ""
+        )
         form[11] = FormModel("cvv", cvvLt!!, Objects.requireNonNull(etCvv?.text).toString(), "", "")
     }
 
@@ -269,7 +393,7 @@ class CheckoutActivity : AppCompatActivity() {
         dialog.setCancelable(false)
         dialog.setPositiveButton("Continue Shopping") { dialog, which ->
             dialog.cancel()
-            val homeIntent = Intent(this@CheckoutActivity, ProductActivity::class.java)
+            val homeIntent = Intent(this@CheckoutActivity, MainActivity::class.java)
             startActivity(homeIntent)
             finish()
         }
