@@ -1,7 +1,7 @@
 
 # QuickMart
 
-An E-commerce Android application using kotlin as a final term project.
+An E-commerce Android application using Kotlin as the Capstone Project for the final term of a Postgraduate program.
 
 # Screenshots
 
